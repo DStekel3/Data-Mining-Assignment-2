@@ -1,10 +1,7 @@
+source('DataLoader.R')
+
 # load the tm package
 library(tm)
-# Read in the trainset data using UTF-8 encoding
-reviews.dec <- VCorpus(DirSource("dataset/trainset/dec", recursive = TRUE,
-                                  encoding="UTF-8"))
-reviews.tru <- VCorpus(DirSource("dataset/trainset/tru", recursive = TRUE,
-                                  encoding="UTF-8"))
 
 # Naive Bayes training function
 train.mnb <- function (dtm,labels)
@@ -41,71 +38,28 @@ predict.mnb <- function (model,dtm)
   classlabels[max.col(logprobs)]
 }
 
-
-
-# join truthful and deceptive data into a single corpus
-reviews.trainset.all <- c(reviews.dec, reviews.tru)
+trainset <- GetTrainset()
 
 # create label vector (0=deceptive, 1=truthful)
-reviews.trainset.labels <- c(rep(0,320), rep(1,320))
-
-# PRE-PROCESSING
-
-# Remove punctuation marks (comma’s, etc.)
-reviews.trainset.all <- tm_map(reviews.trainset.all,removePunctuation)
-# Make all letters lower case
-reviews.trainset.all <- tm_map(reviews.trainset.all,content_transformer(tolower))
-# Remove stopwords
-reviews.trainset.all <- tm_map(reviews.trainset.all, removeWords,
-                        stopwords("english"))
-# Remove numbers
-reviews.trainset.all <- tm_map(reviews.trainset.all,removeNumbers)
-# Remove excess whitespace
-reviews.trainset.all <- tm_map(reviews.trainset.all,stripWhitespace)
-
-reviews.trainset.all <- tm_map(reviews.trainset.all, stemDocument)
-
-# indexes of truthful and deceptive documents as trainset
-index.tru <- 1:320
-index.dec <- 321:640
-index.train <- c(index.tru, index.dec)
+trainset.labels <- c(rep(0,320), rep(1,320))
 
 # create document-term matrix from training corpus
-train.dtm <- DocumentTermMatrix(reviews.trainset.all[index.train])
+train.dtm <- DocumentTermMatrix(trainset)
 
 # remove feature that occus in less than 5% of the documents
 train.dtm <- removeSparseTerms(train.dtm,0.95)
 
 # train the naive bayes multinomial classifier using the trainset
-reviews.mnb <- train.mnb(as.matrix(train.dtm),reviews.trainset.labels[index.train])
+reviews.mnb <- train.mnb(as.matrix(train.dtm),trainset.labels)
 
-# load in the testset
-reviews.testset.dec <- VCorpus(DirSource("dataset/testset/dec", recursive = TRUE,
-                                     encoding="UTF-8"))
+testset <- GetTestset()
 
-reviews.testset.tru <- VCorpus(DirSource("dataset/testset/tru", recursive = TRUE,
-                                         encoding="UTF-8"))
-
-reviews.testset.all <- c(reviews.testset.dec, reviews.testset.tru)
-
-# Remove punctuation marks (comma’s, etc.)
-reviews.testset.all <- tm_map(reviews.testset.all,removePunctuation)
-# Make all letters lower case
-reviews.testset.all <- tm_map(reviews.testset.all,content_transformer(tolower))
-# Remove stopwords
-reviews.testset.all <- tm_map(reviews.testset.all, removeWords,
-                               stopwords("english"))
-# Remove numbers
-reviews.testset.all <- tm_map(reviews.testset.all,removeNumbers)
-# Remove excess whitespace
-reviews.testset.all <- tm_map(reviews.testset.all,stripWhitespace)
-
-reviews.testset.labels <- c(rep(0, 80), rep(1,80))
+testset.labels <- c(rep(0, 80), rep(1,80))
 
 # create document term matrix for test set
-test.dtm <- DocumentTermMatrix(reviews.testset.all, list(dictionary=dimnames(train.dtm)[[2]]))
+test.dtm <- DocumentTermMatrix(testset, list(dictionary=dimnames(train.dtm)[[2]]))
 
 reviews.mnb.pred <- predict.mnb(reviews.mnb,as.matrix(test.dtm))
 
-print(table(reviews.mnb.pred,reviews.testset.labels))
+print(table(reviews.mnb.pred,testset.labels))
 
