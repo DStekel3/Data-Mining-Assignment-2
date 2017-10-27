@@ -16,7 +16,7 @@ GetTrainset <- function(){
   
   # PRE-PROCESSING
   
-  # Remove punctuation marks (comma’s, etc.)
+  # Remove punctuation marks (commas, etc.)
   reviews.trainset.all <- tm_map(reviews.trainset.all,removePunctuation)
   # Make all letters lower case
   reviews.trainset.all <- tm_map(reviews.trainset.all,content_transformer(tolower))
@@ -29,6 +29,8 @@ GetTrainset <- function(){
   reviews.trainset.all <- tm_map(reviews.trainset.all,stripWhitespace)
   
   reviews.trainset.all <- tm_map(reviews.trainset.all, stemDocument)
+  
+  reviews.trainset.all <- tm_map(reviews.trainset.all, PlainTextDocument)
   return(reviews.trainset.all)
 }
 
@@ -43,7 +45,7 @@ GetTestset <- function(){
   
   reviews.testset.all <- c(reviews.testset.dec, reviews.testset.tru)
   
-  # Remove punctuation marks (comma’s, etc.)
+  # Remove punctuation marks (commas, etc.)
   reviews.testset.all <- tm_map(reviews.testset.all,removePunctuation)
   # Make all letters lower case
   reviews.testset.all <- tm_map(reviews.testset.all,content_transformer(tolower))
@@ -54,4 +56,5 @@ GetTestset <- function(){
   reviews.testset.all <- tm_map(reviews.testset.all,removeNumbers)
   # Remove excess whitespace
   reviews.testset.all <- tm_map(reviews.testset.all,stripWhitespace)
+  reviews.testset.all <- tm_map(reviews.testset.all, PlainTextDocument)
 }
