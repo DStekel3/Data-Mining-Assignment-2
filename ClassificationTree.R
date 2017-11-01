@@ -12,8 +12,8 @@ trainset.labels <- c(rep(0,320), rep(1,320))
 train.dtm <- DocumentTermMatrix(trainset)
 
 
-# remove feature that occus in less than 5% of the documents
-train.dtm <- removeSparseTerms(train.dtm,0.95)
+# remove features that occur in less than 2% of the documents
+train.dtm <- removeSparseTerms(train.dtm,0.98)
 
 # include bigrams
 train.dtm <- GetTrainsetBi()

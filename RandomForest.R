@@ -17,7 +17,7 @@ index.train <- c(index.tru, index.dec)
 # create document-term matrix from training corpus
 train.dtm <- DocumentTermMatrix(reviews.trainset.all[index.train])
 
-# remove feature that occus in less than 2% of the documents
+# remove features that occur in less than 2% of the documents
 train.dtm <- removeSparseTerms(train.dtm,0.98)
 
 # include bigrams
