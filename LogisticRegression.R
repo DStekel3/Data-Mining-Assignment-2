@@ -49,7 +49,7 @@ print("Basic Logistic regression:")
 print(table(reviews.logreg.pred, testset.labels))
 
 UsingTermFrequencies(trainset, trainset.labels, testset, testset.labels)
-UsingBigrams(trainset, trainset.labels, testset, testset.labels)
+UsingBigrams(trainset, train.dtm, trainset.labels, testset, testset.labels)
 
 UsingTermFrequencies <- function(trainset, trainset.labels, testset, testset.labels){
   # construct training document term matrix with tf-idf weights
@@ -102,7 +102,7 @@ UsingTermFrequencies <- function(trainset, trainset.labels, testset, testset.lab
   print(table(reviews.logreg2.pred, testset.labels))
 }
 
-UsingBigrams <- function(trainset, trainset.labels, testset, testset.labels){
+UsingBigrams <- function(trainset, train.dtm, trainset.labels, testset, testset.labels){
   # extract bigrams
   train.dtm2 <- DocumentTermMatrix(trainset,
                                    control = list(tokenize = BigramTokenizer))
@@ -110,7 +110,7 @@ UsingBigrams <- function(trainset, trainset.labels, testset, testset.labels){
   # more than 40000 bigrams!
   dim(train.dtm2)
   
-  train.dtm2 <- removeSparseTerms(train.dtm2,0.99)
+  train.dtm2 <- removeSparseTerms(train.dtm2,0.98)
   
   # only 461 left :)
   dim(train.dtm2)
