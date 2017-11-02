@@ -21,12 +21,12 @@ GetTrainset <- function(){
   reviews.trainset.all <- tm_map(reviews.trainset.all,removePunctuation)
   # Make all letters lower case
   reviews.trainset.all <- tm_map(reviews.trainset.all,content_transformer(tolower))
-  # Remove stopwords
-  reviews.trainset.all <- tm_map(reviews.trainset.all, removeWords, stopwords("english"))
-  # Remove numbers
-  reviews.trainset.all <- tm_map(reviews.trainset.all,removeNumbers)
   # Remove excess whitespace
   reviews.trainset.all <- tm_map(reviews.trainset.all,stripWhitespace)
+  # Remove numbers
+  reviews.trainset.all <- tm_map(reviews.trainset.all,removeNumbers)
+  # Remove stopwords
+  reviews.trainset.all <- tm_map(reviews.trainset.all, removeWords, stopwords("english"))
   return(reviews.trainset.all)
 }
 
@@ -41,15 +41,14 @@ GetTestset <- function(){
   
   # Remove punctuation marks (commas, etc.)
   # reviews.testset.all <- tm_map(reviews.testset.all,removePunctuation)
-  # 
   # # Make all letters lower case
   # reviews.testset.all <- tm_map(reviews.testset.all,content_transformer(tolower))
-  # # Remove stopwords
-  # reviews.testset.all <- tm_map(reviews.testset.all, removeWords, stopwords("english"))
-  # # Remove numbers
-  # reviews.testset.all <- tm_map(reviews.testset.all,removeNumbers)
   # # Remove excess whitespace
   # reviews.testset.all <- tm_map(reviews.testset.all,stripWhitespace)
+  # # Remove numbers
+  # reviews.testset.all <- tm_map(reviews.testset.all,removeNumbers)
+  # # Remove stopwords
+  # reviews.testset.all <- tm_map(reviews.testset.all, removeWords, stopwords("english"))
 }
 
 BigramTokenizer <- function(x) {NGramTokenizer(x, Weka_control(min = 2, max = 2))}
