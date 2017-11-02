@@ -46,22 +46,25 @@ trainset.labels <- c(rep(0,320), rep(1,320))
 # create document-term matrix from training corpus
 train.dtm <- DocumentTermMatrix(trainset)
 
-# remove feature that occus in less than 2% of the documents
-train.dtm <- removeSparseTerms(train.dtm,0.98)
+# remove feature that occus in less than 5% of the documents
+train.dtm <- removeSparseTerms(train.dtm,0.95)
 
 # uncomment the next line for bigrams
-train.dtm <- GetTrainsetBi()
+# train.dtm <- GetTrainsetBi()
 
 # train the naive bayes multinomial classifier using the trainset
 reviews.mnb <- train.mnb(as.matrix(train.dtm),trainset.labels)
 
 testset <- GetTestset()
 
+
 testset.labels <- c(rep(0, 80), rep(1,80))
 
 # create document term matrix for test set
 test.dtm <- DocumentTermMatrix(testset, list(dictionary=dimnames(train.dtm)[[2]]))
-test.dtm <- GetTestsetBi()
+
+# uncomment the next line for bigrams
+# test.dtm <- GetTestsetBi()
 
 reviews.mnb.pred <- predict.mnb(reviews.mnb,as.matrix(test.dtm))
 
