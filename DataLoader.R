@@ -62,7 +62,7 @@ GetTrainsetBi <- function(){
   train.dtm <- DocumentTermMatrix(trainset)
   
   # remove features that occur in less than 2% of the documents
-  train.dtm <- removeSparseTerms(train.dtm, 0.98)
+  train.dtm <- removeSparseTerms(train.dtm, GetSparseTermThreshold())
   
   # extract bigrams
   train.dtm2 <- DocumentTermMatrix(trainset,
@@ -71,7 +71,7 @@ GetTrainsetBi <- function(){
   # more than 40000 bigrams!
   dim(train.dtm2)
   
-  train.dtm2 <- removeSparseTerms(train.dtm2,0.98)
+  train.dtm2 <- removeSparseTerms(train.dtm2,GetSparseTermThreshold())
   
   dim(train.dtm2)
   
@@ -83,4 +83,8 @@ GetTrainsetBi <- function(){
   train.dat <- cbind(train.dat1,train.dat2)
   
   return(train.dat)
+}
+
+GetSparseTermThreshold <- function(){
+  return(0.98)
 }

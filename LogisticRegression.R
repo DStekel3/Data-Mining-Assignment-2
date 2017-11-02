@@ -19,7 +19,7 @@ trainset.labels <- c(rep(0, 320), rep(1, 320))
 train.dtm <- DocumentTermMatrix(trainset)
 
 # remove feature that occur in less than 2% of the documents
-train.dtm <- removeSparseTerms(train.dtm, 0.98)
+train.dtm <- removeSparseTerms(train.dtm, GetSparseTermThreshold())
 
 testset <- GetTestset()
 
@@ -60,7 +60,7 @@ train.dtm2 <- DocumentTermMatrix(trainset,
 # more than 40000 bigrams!
 dim(train.dtm2)
 
-train.dtm2 <- removeSparseTerms(train.dtm2, 0.98)
+train.dtm2 <- removeSparseTerms(train.dtm2, GetSparseTermThreshold())
 
 # only 461 left :)
 dim(train.dtm2)
@@ -115,7 +115,7 @@ UsingTermFrequencies <-
     train2.dtm <- DocumentTermMatrix(trainset,
                                      control = list(weighting = weightTfIdf))
     # remove sparse terms
-    train2.dtm <- removeSparseTerms(train2.dtm, 0.95)
+    train2.dtm <- removeSparseTerms(train2.dtm, GetSparseTermThreshold())
     
     # create document term matrix for test set
     test.dtm <-

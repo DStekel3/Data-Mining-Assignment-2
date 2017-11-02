@@ -18,7 +18,7 @@ index.train <- c(index.tru, index.dec)
 train.dtm <- DocumentTermMatrix(reviews.trainset.all[index.train])
 
 # remove features that occur in less than 2% of the documents
-train.dtm <- removeSparseTerms(train.dtm,0.98)
+train.dtm <- removeSparseTerms(train.dtm,GetSparseTermThreshold())
 
 # include bigrams
 train.dtm <- GetTrainsetBi()

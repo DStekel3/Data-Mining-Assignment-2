@@ -13,7 +13,7 @@ train.dtm <- DocumentTermMatrix(trainset)
 
 
 # remove features that occur in less than 2% of the documents
-train.dtm <- removeSparseTerms(train.dtm,0.98)
+train.dtm <- removeSparseTerms(train.dtm,GetSparseTermThreshold())
 
 # include bigrams
 train.dtm <- GetTrainsetBi()
