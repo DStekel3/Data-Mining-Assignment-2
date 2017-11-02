@@ -38,17 +38,16 @@ GetTestset <- function(){
   reviews.testset.tru <- VCorpus(DirSource("dataset/testset/tru", recursive = TRUE, encoding="UTF-8"))
   reviews.testset.all <- c(reviews.testset.dec, reviews.testset.tru)
   
-  
   # Remove punctuation marks (commas, etc.)
-  # reviews.testset.all <- tm_map(reviews.testset.all,removePunctuation)
-  # # Make all letters lower case
-  # reviews.testset.all <- tm_map(reviews.testset.all,content_transformer(tolower))
-  # # Remove excess whitespace
-  # reviews.testset.all <- tm_map(reviews.testset.all,stripWhitespace)
-  # # Remove numbers
-  # reviews.testset.all <- tm_map(reviews.testset.all,removeNumbers)
-  # # Remove stopwords
-  # reviews.testset.all <- tm_map(reviews.testset.all, removeWords, stopwords("english"))
+  reviews.testset.all <- tm_map(reviews.testset.all,removePunctuation)
+  # Make all letters lower case
+  reviews.testset.all <- tm_map(reviews.testset.all,content_transformer(tolower))
+  # Remove excess whitespace
+  reviews.testset.all <- tm_map(reviews.testset.all,stripWhitespace)
+  # Remove numbers
+  reviews.testset.all <- tm_map(reviews.testset.all,removeNumbers)
+  # Remove stopwords
+  reviews.testset.all <- tm_map(reviews.testset.all, removeWords, stopwords("english"))
 }
 
 BigramTokenizer <- function(x) {NGramTokenizer(x, Weka_control(min = 2, max = 2))}

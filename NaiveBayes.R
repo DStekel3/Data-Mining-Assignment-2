@@ -1,5 +1,6 @@
 source('DataLoader.R')
 
+
 # load the tm package
 library(tm)
 
@@ -37,7 +38,8 @@ predict.mnb <- function (model,dtm)
   logprobs <- logprobs+matrix(nrow=N,ncol=nclass,log(model$prior),byrow=T)
   classlabels[max.col(logprobs)]
 }
-
+# Start the clock!
+ptm <- proc.time()
 trainset <- GetTrainset()
 
 # create label vector (0=deceptive, 1=truthful)
@@ -47,7 +49,7 @@ trainset.labels <- c(rep(0,320), rep(1,320))
 train.dtm <- DocumentTermMatrix(trainset)
 
 # remove features that occur in less than 2% of the documents
-train.dtm <- removeSparseTerms(train.dtm,GetSparseTermThreshold())
+# train.dtm <- removeSparseTerms(train.dtm,GetSparseTermThreshold())
 
 # uncomment the next line for bigrams
 # train.dtm <- GetTrainsetBi()
@@ -67,6 +69,7 @@ test.dtm <- DocumentTermMatrix(testset, list(dictionary=dimnames(train.dtm)[[2]]
 # test.dtm <- GetTestsetBi()
 
 reviews.mnb.pred <- predict.mnb(reviews.mnb,as.matrix(test.dtm))
-
+# Stop the clock
+print(proc.time() - ptm)
 print(table(reviews.mnb.pred,testset.labels))
 
