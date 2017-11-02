@@ -26,9 +26,11 @@ train.dtm <- GetTrainsetBi()
 matrix <- as.matrix(train.dtm)
 labels <- reviews.trainset.labels
 matrix <- cbind(matrix, labels)
-trainset.frame <- as.data.frame(matrix, stringsAsFactors = FALSE)
-names(trainset.frame)[names(trainset.frame ) == 'next'] <- 'next_term'
-names(trainset.frame)[names(trainset.frame ) == 'break'] <- 'break_term'
+trainset.frame <- as.data.frame(matrix)
+#names(trainset.frame)[names(trainset.frame ) == 'next'] <- 'next_term'
+#names(trainset.frame)[names(trainset.frame ) == 'else'] <- 'else_term'
+#names(trainset.frame)[names(trainset.frame ) == 'break'] <- 'break_term'
+names(trainset.frame) <- make.names(names(trainset.frame))
 rownames(trainset.frame) <- c()
 
 forest <- randomForest(formula = as.factor(labels) ~., data = trainset.frame, ntree=100, replace=TRUE)
@@ -39,9 +41,11 @@ testset.labels <- c(rep(0, 80), rep(1,80))
 test.dtm <- DocumentTermMatrix(reviews.testset.all, list(dictionary=dimnames(train.dtm)[[2]]))
 
 testset.frame <- as.data.frame(as.matrix(test.dtm), stringsAsFactors = FALSE)
-names(testset.frame)[names(testset.frame) == 'next'] <- 'next_term'
-names(testset.frame)[names(testset.frame) == 'break'] <- 'break_term'
-rownames(testset.frame) <- c()
+#names(testset.frame)[names(testset.frame) == 'next'] <- 'next_term'
+#names(testset.frame)[names(testset.frame) == 'else'] <- 'else_term'
+#names(testset.frame)[names(testset.frame) == 'break'] <- 'break_term'
+names(trainset.frame) <- make.names(names(trainset.frame))
+rownames(trainset.frame) <- c()
 
 prediction <- predict(forest, testset.frame, type = "class")
 
