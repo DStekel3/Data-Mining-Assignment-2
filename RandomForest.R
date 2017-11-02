@@ -42,9 +42,9 @@ test.dtm <- DocumentTermMatrix(reviews.testset.all, list(dictionary=dimnames(tra
 
 testset.frame <- as.data.frame(as.matrix(test.dtm), stringsAsFactors = FALSE)
 #names(testset.frame)[names(testset.frame) == 'next'] <- 'next_term'
-#names(testset.frame)[names(testset.frame) == 'else'] <- 'else_term'
+#names(testset.frame)[names(testset.frame) == 'else.'] <- 'else'
 #names(testset.frame)[names(testset.frame) == 'break'] <- 'break_term'
-names(trainset.frame) <- make.names(names(trainset.frame))
+names(testset.frame) <- make.names(names(testset.frame))
 rownames(trainset.frame) <- c()
 
 prediction <- predict(forest, testset.frame, type = "class")
